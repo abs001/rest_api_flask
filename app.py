@@ -31,9 +31,16 @@ def create_store():
 def create_item(name):
     request_data = request.get_json()
     for store in stores:
-        print(store["name"])
         if store["name"] == name:
             new_item = {"name": request_data["name"], "price": request_data["price"]}
             store["items"].append(new_item)
             return new_item, 201
     return {"message": "Store not found!"}
+
+
+@app.get("/store/<string:name>")
+def get_single_store(name):
+    for store in stores:
+        if store["name"] == name:
+            return store
+    return {"message": "Store not found!"}, 404
